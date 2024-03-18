@@ -13,7 +13,7 @@ import { InputDefinition } from '../config/workspace-json-project-json';
 import { minimatch } from 'minimatch';
 import { NativeTaskHasherImpl } from './native-task-hasher-impl';
 import { workspaceRoot } from '../utils/workspace-root';
-import { NxWorkspaceFilesExternals } from '../native';
+import { NxWorkspaceFilesExternals } from '../native/import';
 
 /**
  * A data structure returned by the default hasher.

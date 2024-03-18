@@ -1,4 +1,4 @@
-import { ChildProcess, RustPseudoTerminal } from '../native';
+import { ChildProcess, RustPseudoTerminal } from '../native/import';
 import { PseudoIPCServer } from './pseudo-ipc';
 import { FORKED_PROCESS_OS_SOCKET_PATH } from '../daemon/socket-utils';
 import { Serializable } from 'child_process';

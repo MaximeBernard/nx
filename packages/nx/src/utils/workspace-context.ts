@@ -1,4 +1,4 @@
-import type { NxWorkspaceFilesExternals, WorkspaceContext } from '../native';
+import type { NxWorkspaceFilesExternals, WorkspaceContext } from '../native/import';
 import { performance } from 'perf_hooks';
 import { cacheDirectoryForWorkspace } from './cache-directory';
 
@@ -6,7 +6,7 @@ let workspaceContext: WorkspaceContext | undefined;
 
 export function setupWorkspaceContext(workspaceRoot: string) {
   const { WorkspaceContext } =
-    require('../native') as typeof import('../native');
+    require('../native/import') as typeof import('../native/import');
   performance.mark('workspace-context');
   workspaceContext = new WorkspaceContext(
     workspaceRoot,

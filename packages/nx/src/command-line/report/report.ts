@@ -315,7 +315,7 @@ export function findInstalledPackagesWeCareAbout() {
 
 function isNativeAvailable() {
   try {
-    require('../../native');
+    require('../../native/import');
     return true;
   } catch {
     return false;

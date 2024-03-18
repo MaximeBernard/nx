@@ -8,7 +8,7 @@ import { existsSync } from 'fs';
 import { join, relative } from 'path';
 import { getPackageManagerCommand } from './package-manager';
 import { workspaceRoot, workspaceRootInner } from './workspace-root';
-import { ChildProcess } from '../native';
+import { ChildProcess } from '../native/import';
 
 export function runNxSync(
   cmd: string,

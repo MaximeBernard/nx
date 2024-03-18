@@ -11,7 +11,7 @@ import {
 } from '../../utils/ignore';
 import { platform } from 'os';
 import { getDaemonProcessIdSync, serverProcessJsonPath } from '../cache';
-import type { WatchEvent } from '../../native';
+import type { WatchEvent } from '../../native/import';
 
 const ALWAYS_IGNORE = [...getAlwaysIgnore(workspaceRoot), FULL_OS_SOCKET_PATH];
 
@@ -21,7 +21,7 @@ export type FileWatcherCallback = (
 ) => Promise<void>;
 
 export async function watchWorkspace(server: Server, cb: FileWatcherCallback) {
-  const { Watcher } = await import('../../native');
+  const { Watcher } = await import('../../native/import');
 
   let relativeServerProcess = normalizePath(
     relative(workspaceRoot, serverProcessJsonPath)
@@ -61,7 +61,7 @@ export async function watchWorkspace(server: Server, cb: FileWatcherCallback) {
 }
 
 export async function watchOutputFiles(cb: FileWatcherCallback) {
-  const { Watcher } = await import('../../native');
+  const { Watcher } = await import('../../native/import');
 
   let watcher = new Watcher(workspaceRoot, null, false);
   watcher.watch((err, events) => {

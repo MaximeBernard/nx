@@ -9,7 +9,7 @@ import {
   ProjectsConfigurations,
 } from '../config/workspace-json-project-json';
 import { daemonClient } from '../daemon/client/client';
-import { NxWorkspaceFilesExternals } from '../native';
+import { NxWorkspaceFilesExternals } from '../native/import';
 import {
   getAllFileDataInContext,
   updateProjectFiles,

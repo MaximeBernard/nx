@@ -34,7 +34,7 @@ import { existsSync } from 'fs';
 import { PackageJson } from '../utils/package-json';
 import { getNxRequirePaths } from '../utils/installation-directory';
 import { output } from '../utils/output';
-import { ExternalObject, NxWorkspaceFilesExternals } from '../native';
+import { ExternalObject, NxWorkspaceFilesExternals } from '../native/import';
 
 let storedFileMap: FileMap | null = null;
 let storedAllWorkspaceFiles: FileData[] | null = null;

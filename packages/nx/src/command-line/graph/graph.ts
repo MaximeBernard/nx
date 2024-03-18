@@ -44,7 +44,7 @@ import {
 import { allFileData } from '../../utils/all-file-data';
 import { splitArgsIntoNxArgsAndOverrides } from '../../utils/command-line-utils';
 import { NxJsonConfiguration } from '../../config/nx-json';
-import { HashPlanner, transferProjectGraph } from '../../native';
+import { HashPlanner, transferProjectGraph } from '../../native/import';
 import { transformProjectGraphForRust } from '../../native/transform-objects';
 import { getAffectedGraphNodes } from '../affected/affected';
 import { readFileMapCache } from '../../project-graph/nx-deps-cache';

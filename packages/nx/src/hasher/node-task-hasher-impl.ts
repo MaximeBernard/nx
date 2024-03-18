@@ -12,7 +12,7 @@ import { getOutputsForTargetAndConfiguration } from '../tasks-runner/utils';
 import { workspaceRoot } from '../utils/workspace-root';
 import { minimatch } from 'minimatch';
 import { join } from 'path';
-import { hashFile } from '../native';
+import { hashFile } from '../native/import';
 import { findAllProjectNodeDependencies } from '../utils/project-graph-utils';
 import { findMatchingProjects } from '../utils/find-matching-projects';
 import { exec } from 'child_process';
@@ -275,7 +275,7 @@ export class NodeTaskHasherImpl implements TaskHasherImpl {
         this.projectGraph.nodes[childTask.target.project]
       );
       const { getFilesForOutputs } =
-        require('../native') as typeof import('../native');
+        require('../native/import') as typeof import('../native/import');
       const outputFiles = getFilesForOutputs(workspaceRoot, outputs);
       const filteredFiles = outputFiles.filter(
         (p) =>

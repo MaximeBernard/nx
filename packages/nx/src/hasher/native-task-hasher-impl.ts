@@ -10,7 +10,7 @@ import {
   ProjectGraph as NativeProjectGraph,
   TaskHasher,
   transferProjectGraph,
-} from '../native';
+} from '../native/import';
 import { transformProjectGraphForRust } from '../native/transform-objects';
 import { PartialHash, TaskHasherImpl } from './task-hasher';
 import { readJsonFile } from '../utils/fileutils';

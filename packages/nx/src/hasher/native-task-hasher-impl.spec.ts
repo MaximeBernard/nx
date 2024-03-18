@@ -4,7 +4,6 @@ import { NxJsonConfiguration } from '../config/nx-json';
 import { createTaskGraph } from '../tasks-runner/create-task-graph';
 import { NativeTaskHasherImpl } from './native-task-hasher-impl';
 import { ProjectGraphBuilder } from '../project-graph/project-graph-builder';
-import { testOnlyTransferFileMap } from '../native';
 
 describe('native task hasher', () => {
   let tempFs: TempFs;

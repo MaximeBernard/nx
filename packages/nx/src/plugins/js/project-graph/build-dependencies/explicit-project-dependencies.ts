@@ -90,7 +90,7 @@ export function buildExplicitTypeScriptDependencies(
     }
   }
 
-  const { findImports } = require('../../../../native');
+  const { findImports } = require('../../../../native/import');
 
   const imports = findImports(filesToProcess);
 

@@ -1,5 +1,5 @@
 import { dirname } from 'path';
-import { WatchEvent, getFilesForOutputs } from '../../native';
+import { WatchEvent, getFilesForOutputs } from '../../native/import';
 import { collapseExpandedOutputs } from '../../utils/collapse-expanded-outputs';
 import { workspaceRoot } from '../../utils/workspace-root';
 

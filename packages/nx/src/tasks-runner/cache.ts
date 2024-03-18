@@ -172,7 +172,7 @@ export class Cache {
     outputs: string[],
     cwd: string
   ): Promise<string[]> {
-    const { expandOutputs } = require('../native');
+    const { expandOutputs } = require('../native/import');
     performance.mark('expandOutputs:start');
     const results = expandOutputs(cwd, outputs);
     performance.mark('expandOutputs:end');
@@ -186,7 +186,7 @@ export class Cache {
   }
 
   private async copy(src: string, destination: string): Promise<void> {
-    const { copy } = require('../native');
+    const { copy } = require('../native/import');
     // 'cp -a /path/dir/ dest/' operates differently to 'cp -a /path/dir dest/'
     // --> which means actual build works but subsequent populate from cache (using cp -a) does not
     // --> the fix is to remove trailing slashes to ensure consistent & expected behaviour
@@ -203,7 +203,7 @@ export class Cache {
   }
 
   private async remove(path: string): Promise<void> {
-    const { remove } = require('../native');
+    const { remove } = require('../native/import');
     return new Promise((res, rej) => {
       try {
         remove(path);

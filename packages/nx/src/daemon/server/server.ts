@@ -3,7 +3,7 @@ import { createServer, Server, Socket } from 'net';
 import { join } from 'path';
 import { PerformanceObserver } from 'perf_hooks';
 import { hashArray } from '../../hasher/file-hasher';
-import { hashFile } from '../../native';
+import { hashFile } from '../../native/import';
 import { consumeMessagesFromSocket } from '../../utils/consume-messages-from-socket';
 import { readJsonFile } from '../../utils/fileutils';
 import { PackageJson } from '../../utils/package-json';

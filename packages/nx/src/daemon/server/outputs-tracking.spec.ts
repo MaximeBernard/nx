@@ -1,4 +1,4 @@
-import { EventType } from '../../native';
+import { EventType } from '../../native/import';
 import {
   _outputsHashesMatch,
   _recordOutputsHash,
