@@ -1,10 +1,10 @@
-const { join, sep, normalize} = require( "path");
-const { createHash } = require("crypto");
-const {copyFileSync, existsSync, mkdirSync} = require("fs");
+const { join, sep, normalize } = require('path');
+const { createHash } = require('crypto');
+const { copyFileSync, existsSync, mkdirSync, readFileSync } = require('fs');
 const Module = require('module');
 const { tmpdir } = require('os');
 
-console.log('importing native module')
+console.log('importing native module');
 
 const nxPackages = [
   '@nx/nx-android-arm64',
@@ -20,7 +20,7 @@ const nxPackages = [
   '@nx/nx-linux-x64-gnu',
   '@nx/nx-linux-arm64-musl',
   '@nx/nx-linux-arm64-gnu',
-  '@nx/nx-linux-arm-gnueabihf'
+  '@nx/nx-linux-arm-gnueabihf',
 ];
 
 const localNodeFiles = [
@@ -37,37 +37,43 @@ const localNodeFiles = [
   'nx.linux-x64-gnu.node',
   'nx.linux-arm64-musl.node',
   'nx.linux-arm64-gnu.node',
-  'nx.linux-arm-gnueabihf.node'
+  'nx.linux-arm-gnueabihf.node',
 ];
 
 const originalLoad = Module._load;
 
-Module._load = function(request, parent, isMain) {
-  const modulePath = request
-  if (nxPackages.includes(modulePath) || localNodeFiles.some(f => modulePath.endsWith(f))) {
-    const nativeLocation = require.resolve(modulePath)
+Module._load = function (request, parent, isMain) {
+  const modulePath = request;
+  if (
+    nxPackages.includes(modulePath) ||
+    localNodeFiles.some((f) => modulePath.endsWith(f))
+  ) {
+    const nativeLocation = require.resolve(modulePath);
     // console.log('getting native location', nativeLocation)
-    const fileName = normalize(nativeLocation).split(sep).pop()
+    const fileName = normalize(nativeLocation).split(sep).pop();
+    const fileContents = readFileSync(nativeLocation, 'utf8');
     // console.log('fileName', fileName)
-    const tmpFolder = join(tmpdir(), 'nx-native-cache')
-    const hash = createHash('md5').update(nativeLocation).digest('hex');
+    const hash = createHash('md5')
+      .update(nativeLocation + fileContents)
+      .digest('hex');
     // console.log('hash for location is', hash)
-    const tmpFile = join(tmpFolder, hash + '-' + fileName)
+    const tmpFolder = join(tmpdir(), 'nx-native-cache');
+    const tmpFile = join(tmpFolder, hash + '-' + fileName);
     if (existsSync(tmpFile)) {
-      console.log('file already exists @', tmpFile)
-      return originalLoad.apply(this, [tmpFile, parent, isMain])
+      console.log('file already exists @', tmpFile);
+      return originalLoad.apply(this, [tmpFile, parent, isMain]);
     }
     if (!existsSync(tmpFolder)) {
       // console.log('creating tmp folder')
-      mkdirSync(tmpFolder)
+      mkdirSync(tmpFolder);
     }
     // console.log('copying file to', tmpFile)
-    copyFileSync(nativeLocation, tmpFile)
-    console.log('copied sucessfully, loading from', tmpFile)
-    return originalLoad.apply(this, [tmpFile, parent, isMain])
+    copyFileSync(nativeLocation, tmpFile);
+    console.log('copied sucessfully, loading from', tmpFile);
+    return originalLoad.apply(this, [tmpFile, parent, isMain]);
   } else {
     // console.log('fallback for', arguments[0])
-    return originalLoad.apply(this, arguments)
+    return originalLoad.apply(this, arguments);
   }
 };
 //
@@ -104,11 +110,9 @@ Module._load = function(request, parent, isMain) {
 //   }
 // }
 
-console.log('requiring ./ from', __dirname)
-const indexModulePath = require.resolve('./')
-delete require.cache[indexModulePath]
-const indexModule = require('./')
-const {platform} = require("os");
-module.exports = indexModule
-Module._load = originalLoad
-
+console.log('requiring ./ from', __dirname);
+const indexModulePath = require.resolve('./');
+delete require.cache[indexModulePath];
+const indexModule = require('./');
+module.exports = indexModule;
+Module._load = originalLoad;
