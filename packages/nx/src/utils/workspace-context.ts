@@ -1,4 +1,7 @@
-import type { NxWorkspaceFilesExternals, WorkspaceContext } from '../native/import';
+import type {
+  NxWorkspaceFilesExternals,
+  WorkspaceContext,
+} from '../native/import';
 import { performance } from 'perf_hooks';
 import { cacheDirectoryForWorkspace } from './cache-directory';
 

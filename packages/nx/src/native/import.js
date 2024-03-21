@@ -4,8 +4,6 @@ const { copyFileSync, existsSync, mkdirSync, readFileSync } = require('fs');
 const Module = require('module');
 const { tmpdir } = require('os');
 
-console.log('importing native module');
-
 const nxPackages = [
   '@nx/nx-android-arm64',
   '@nx/nx-android-arm-eabi',
@@ -49,14 +47,11 @@ Module._load = function (request, parent, isMain) {
     localNodeFiles.some((f) => modulePath.endsWith(f))
   ) {
     const nativeLocation = require.resolve(modulePath);
-    // console.log('getting native location', nativeLocation)
     const fileName = normalize(nativeLocation).split(sep).pop();
     const fileContents = readFileSync(nativeLocation, 'utf8');
-    // console.log('fileName', fileName)
     const hash = createHash('md5')
       .update(nativeLocation + fileContents)
       .digest('hex');
-    // console.log('hash for location is', hash)
     const tmpFolder = join(tmpdir(), 'nx-native-cache');
     const tmpFile = join(tmpFolder, hash + '-' + fileName);
     if (existsSync(tmpFile)) {
@@ -64,53 +59,16 @@ Module._load = function (request, parent, isMain) {
       return originalLoad.apply(this, [tmpFile, parent, isMain]);
     }
     if (!existsSync(tmpFolder)) {
-      // console.log('creating tmp folder')
       mkdirSync(tmpFolder);
     }
-    // console.log('copying file to', tmpFile)
     copyFileSync(nativeLocation, tmpFile);
     console.log('copied sucessfully, loading from', tmpFile);
     return originalLoad.apply(this, [tmpFile, parent, isMain]);
   } else {
-    // console.log('fallback for', arguments[0])
     return originalLoad.apply(this, arguments);
   }
 };
-//
-// Module.prototype.require = function () {
-//   const modulePath = arguments[0]
-//   console.log('patched requiring module', modulePath)
-//   if (modulePath.startsWith('@nx/nx-')) {
-//     const nativeLocation = oldRequire.resolve(modulePath)
-//     console.log('getting native location', nativeLocation)
-//     const fileName = nativeLocation.split('/').pop()
-//     console.log('fileName', fileName)
-//     const tmpFolder = join('/tmp', 'nx-native-cache')
-//     const hash = createHash('md5').update(nativeLocation).digest('hex');
-//     console.log('hash for location is', hash)
-//     const tmpFile = join(tmpFolder, hash + '-' + fileName)
-//     if (existsSync(tmpFile)) {
-//       console.log('file already exists')
-//       return oldRequire(tmpFile)
-//     }
-//     if (!existsSync(tmpFolder)) {
-//       console.log('creating tmp folder')
-//       mkdirSync(tmpFolder)
-//     }
-//     console.log('copying file to', tmpFile)
-//     copyFileSync(nativeLocation, tmpFile)
-//     console.log('copied sucessfully')
-//     return oldRequire(tmpFile)
-//   } else if (modulePath.startsWith('./nx.')) {
-//     console.log('requiring native module locally')
-//     return oldRequire(...arguments)
-//   } else {
-//     console.log('fallback for', arguments)(
-//     return oldRequire(...arguments)
-//   }
-// }
 
-console.log('requiring ./ from', __dirname);
 const indexModulePath = require.resolve('./');
 delete require.cache[indexModulePath];
 const indexModule = require('./');
